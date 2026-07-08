@@ -13,10 +13,10 @@
    ============================================================ */
 
 const FESTIVAL_DAYS = [
-  { date: "2026-07-01", label: "J1", stands: J1_STANDS },
-  { date: "2026-07-02", label: "J2", stands: J2_STANDS },
-  { date: "2026-07-03", label: "J3", stands: J3_STANDS },
-  { date: "2026-07-04", label: "J4", stands: J4_STANDS },
+  { date: "2026-07-09", label: "J1", stands: J1_STANDS },
+  { date: "2026-07-10", label: "J2", stands: J2_STANDS },
+  { date: "2026-07-11", label: "J3", stands: J3_STANDS },
+  { date: "2026-07-12", label: "J4", stands: J4_STANDS },
 ];
 
 // Force a specific day? Set to 0-3 or null for auto
