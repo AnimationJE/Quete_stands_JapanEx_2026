@@ -318,12 +318,37 @@ function detectDay(){
 let currentDay = detectDay();
 let stands = ALL_STANDS[currentDay];
 
+/* ========================= DAY LOCK ========================= */
+// Locked = only one day is selectable, no switching:
+//  - DEFAULT_DAY is forcing a specific day, OR
+//  - today's real date exactly matches one of the configured festival dates
+// Any other date (before/after the event, or a date not in FESTIVAL_DAYS)
+// unlocks the selector so all 4 days can be browsed freely.
+function isDayLocked(){
+  if(DEFAULT_DAY !== null && DEFAULT_DAY !== undefined) return true;
+
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth() + 1).padStart(2, '0');
+  const d = String(today.getDate()).padStart(2, '0');
+  const dateStr = `${y}-${m}-${d}`;
+
+  return FESTIVAL_DAYS.some(day => day.date === dateStr);
+}
+const dayLocked = isDayLocked();
+
 /* ========================= DAY SELECTOR UI ========================= */
 const daySelector = document.getElementById("daySelector");
 const dayBadge = document.getElementById("dayBadge");
 
 function buildDaySelector(){
   daySelector.innerHTML = "";
+  if(dayLocked){
+    // Only the current day is valid today — no selector to show
+    daySelector.style.display = "none";
+    return;
+  }
+  daySelector.style.display = "flex";
   DAY_LABELS.forEach((label, i) => {
     const btn = document.createElement("button");
     btn.textContent = FESTIVAL_DAYS[i].label;
@@ -335,6 +360,7 @@ function buildDaySelector(){
 }
 
 function switchDay(newDay){
+  if(dayLocked) return; // safety guard, buttons shouldn't exist anyway
   currentDay = newDay;
   stands = ALL_STANDS[currentDay];
   // Reset progress for new day
